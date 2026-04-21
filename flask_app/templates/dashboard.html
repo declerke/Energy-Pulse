@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}EnergyPulse — Dashboard{% endblock %}
+
+{% block content %}
+<section class="kpi-bar">
+    <div class="kpi">
+        <span class="kpi-label">Pipeline Status</span>
+        <span class="kpi-value status-{{ summary.latest_run.status | replace('_','-') }}">
+            {{ summary.latest_run.status | upper | replace('_', ' ') }}
+        </span>
+    </div>
+    <div class="kpi">
+        <span class="kpi-label">Last Run</span>
+        <span class="kpi-value">{{ summary.latest_run.created_at or '—' }}</span>
+    </div>
+    <div class="kpi">
+        <span class="kpi-label">Records Processed</span>
+        <span class="kpi-value">{{ summary.latest_run.raw_records or 0 | int }}</span>
+    </div>
+    <div class="kpi">
+        <span class="kpi-label">Valid Records</span>
+        <span class="kpi-value">{{ summary.quality.valid or 0 }}</span>
+    </div>
+    <div class="kpi">
+        <span class="kpi-label">Invalid Records</span>
+        <span class="kpi-value warn">{{ summary.quality.invalid or 0 }}</span>
+    </div>
+</section>
+
+<div class="grid-2">
+    <section class="card">
+        <h2>Top Price Increases (vs Previous Period)</h2>
+        {% if top_increase %}
+        <table>
+            <thead><tr><th>Country</th><th>Product</th><th>Current</th><th>Δ</th></tr></thead>
+            <tbody>
+            {% for row in top_increase %}
+            <tr>
+                <td>{{ row.country }}</td>
+                <td>{{ row.product_type | replace('_', ' ') | title }}</td>
+                <td>{{ "%.4f"|format(row.current_price) }}</td>
+                <td class="up">+{{ "%.4f"|format(row.delta) }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty">No movement data yet — run the pipeline first.</p>
+        {% endif %}
+    </section>
+
+    <section class="card">
+        <h2>Top Price Decreases (vs Previous Period)</h2>
+        {% if top_decrease %}
+        <table>
+            <thead><tr><th>Country</th><th>Product</th><th>Current</th><th>Δ</th></tr></thead>
+            <tbody>
+            {% for row in top_decrease %}
+            <tr>
+                <td>{{ row.country }}</td>
+                <td>{{ row.product_type | replace('_', ' ') | title }}</td>
+                <td>{{ "%.4f"|format(row.current_price) }}</td>
+                <td class="down">{{ "%.4f"|format(row.delta) }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty">No movement data yet — run the pipeline first.</p>
+        {% endif %}
+    </section>
+</div>
+
+<section class="card">
+    <h2>Latest Prices by Country</h2>
+    {% if prices %}
+    <table>
+        <thead>
+            <tr>
+                <th>Country</th>
+                <th>Product</th>
+                <th>Price (USD)</th>
+                <th>Unit</th>
+                <th>Reporting Date</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in prices %}
+        <tr>
+            <td>{{ row.country }}</td>
+            <td>{{ row.product_type | replace('_', ' ') | title }}</td>
+            <td>{{ "%.4f"|format(row.price) }}</td>
+            <td>{{ row.unit }}</td>
+            <td>{{ row.reporting_date }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="empty">No price data found. Trigger the Airflow DAG to ingest data.</p>
+    {% endif %}
+</section>
+{% endblock %}

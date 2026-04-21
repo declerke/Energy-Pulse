@@ -1,0 +1,74 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0f1117;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: #1a1d2e;
+    border-bottom: 1px solid #2d3748;
+    padding: 1rem 2rem;
+}
+.header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1400px; margin: 0 auto; }
+header h1 { font-size: 1.4rem; color: #f6e05e; letter-spacing: 0.5px; }
+nav a { color: #90cdf4; text-decoration: none; margin-left: 1.5rem; font-size: 0.9rem; }
+nav a:hover { color: #fff; }
+
+main { flex: 1; max-width: 1400px; margin: 0 auto; padding: 2rem; width: 100%; }
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.75rem;
+    color: #4a5568;
+    border-top: 1px solid #2d3748;
+}
+
+.kpi-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+.kpi {
+    background: #1a1d2e;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    flex: 1;
+    min-width: 160px;
+}
+.kpi-label { display: block; font-size: 0.75rem; color: #718096; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.kpi-value { font-size: 1.1rem; font-weight: 600; color: #e2e8f0; }
+.kpi-value.warn { color: #fc8181; }
+.status-completed { color: #68d391; }
+.status-loaded { color: #63b3ed; }
+.status-ingested { color: #f6e05e; }
+.status-no-runs { color: #718096; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+@media (max-width: 800px) { .grid-2 { grid-template-columns: 1fr; } }
+
+.card {
+    background: #1a1d2e;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+.card h2 { font-size: 1rem; color: #90cdf4; margin-bottom: 1rem; font-weight: 600; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+th { text-align: left; padding: 0.5rem 0.75rem; color: #718096; font-weight: 500; border-bottom: 1px solid #2d3748; font-size: 0.75rem; text-transform: uppercase; }
+td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #1e2433; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #1e2433; }
+
+.up { color: #68d391; font-weight: 600; }
+.down { color: #fc8181; font-weight: 600; }
+.empty { color: #4a5568; font-style: italic; padding: 1rem 0; }
